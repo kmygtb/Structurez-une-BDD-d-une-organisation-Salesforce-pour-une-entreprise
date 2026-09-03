@@ -14,6 +14,7 @@ trigger OpportunityTrigger on Opportunity (after update) {
     }
 
     if (!wonOpportunities.isEmpty()) {
-        TripService.createTripsForWonOpportunities(wonOpportunities);
-    }
+    System.debug('OpportunityTrigger : ' + wonOpportunities.size() + ' opportunite(s) venant de passer a Closed Won.');
+    TripService.createTripsForWonOpportunities(wonOpportunities);
+}
 }

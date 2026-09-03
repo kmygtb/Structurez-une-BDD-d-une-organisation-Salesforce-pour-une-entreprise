@@ -3,11 +3,19 @@ private class TripTriggerTest {
 
     @isTest
     static void testInsert_BlocksWhenEndDateBeforeStartDate() {
+        Account acc = TestDataFactory.createAccount('Compte Trigger Dates');
+        Opportunity opp = TestDataFactory.createOpportunity(
+                acc.Id, 'Prospecting', 0, 'Athenes',
+                Date.today().addDays(10), Date.today().addDays(5), 5
+        );
+
         Trip__c trip = new Trip__c(
                 Statut__c = 'À venir',
                 Destination__c = 'Athenes',
                 Start_Date__c = Date.today().addDays(10),
-                End_Date__c = Date.today().addDays(5)
+                End_Date__c = Date.today().addDays(5),
+                Account__c = acc.Id,
+                Opportunity__c = opp.Id
         );
 
         Test.startTest();
@@ -22,11 +30,19 @@ private class TripTriggerTest {
 
     @isTest
     static void testInsert_SucceedsWhenDatesAreCoherent() {
+        Account acc = TestDataFactory.createAccount('Compte Trigger Dates 2');
+        Opportunity opp = TestDataFactory.createOpportunity(
+                acc.Id, 'Prospecting', 0, 'Athenes',
+                Date.today(), Date.today().addDays(7), 5
+        );
+
         Trip__c trip = new Trip__c(
                 Statut__c = 'À venir',
                 Destination__c = 'Athenes',
                 Start_Date__c = Date.today(),
-                End_Date__c = Date.today().addDays(7)
+                End_Date__c = Date.today().addDays(7),
+                Account__c = acc.Id,
+                Opportunity__c = opp.Id
         );
 
         Test.startTest();
@@ -39,11 +55,19 @@ private class TripTriggerTest {
 
     @isTest
     static void testUpdate_BlocksWhenEndDateChangedToBeforeStartDate() {
+        Account acc = TestDataFactory.createAccount('Compte Trigger Dates 3');
+        Opportunity opp = TestDataFactory.createOpportunity(
+                acc.Id, 'Prospecting', 0, 'Athenes',
+                Date.today(), Date.today().addDays(7), 5
+        );
+
         Trip__c trip = new Trip__c(
                 Statut__c = 'À venir',
                 Destination__c = 'Athenes',
                 Start_Date__c = Date.today(),
-                End_Date__c = Date.today().addDays(7)
+                End_Date__c = Date.today().addDays(7),
+                Account__c = acc.Id,
+                Opportunity__c = opp.Id
         );
         insert trip;
 
