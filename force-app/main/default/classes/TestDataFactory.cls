@@ -24,18 +24,31 @@ public class TestDataFactory {
         return opp;
     }
 
-    public static Trip__c createTrip(Id accountId, Id opportunityId, String statut,
-            Date startDate, Date endDate, Integer participants) {
-        Trip__c trip = new Trip__c(
-                Statut__c = statut,
-                Destination__c = 'Destination Test',
-                Start_Date__c = startDate,
-                End_Date__c = endDate,
-                Number_of_Participants__c = participants,
-                Account__c = accountId,
-                Opportunity__c = opportunityId
-        );
-        insert trip;
-        return trip;
+public static Trip__c createTrip(Id accountId, Id opportunityId, String statut,
+        Date startDate, Date endDate, Integer participants) {
+
+    if (accountId == null) {
+        Account defaultAccount = createAccount('Compte Trip Test Auto');
+        accountId = defaultAccount.Id;
     }
+    if (opportunityId == null) {
+        Opportunity defaultOpp = createOpportunity(
+                accountId, 'Prospecting', 0, 'Destination Auto',
+                startDate, endDate, participants
+        );
+        opportunityId = defaultOpp.Id;
+    }
+
+    Trip__c trip = new Trip__c(
+            Statut__c = statut,
+            Destination__c = 'Destination Test',
+            Start_Date__c = startDate,
+            End_Date__c = endDate,
+            Number_of_Participants__c = participants,
+            Account__c = accountId,
+            Opportunity__c = opportunityId
+    );
+    insert trip;
+    return trip;
+}
 }

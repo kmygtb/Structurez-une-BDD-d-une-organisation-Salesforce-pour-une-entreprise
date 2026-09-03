@@ -8,6 +8,7 @@ public with sharing class ContractService {
             throw new SecurityException('Vous n\'avez pas le droit de créer un contrat.');
         }
         newContract.Status = STATUS_DRAFT;
+        System.debug('ContractService : creation d\'un contrat : ' + newContract.Name);
         insert newContract;
         return newContract;
     }
@@ -16,6 +17,7 @@ public with sharing class ContractService {
         if (!Schema.sObjectType.Contract.isUpdateable()) {
             throw new SecurityException('Vous n\'avez pas le droit de modifier ce contrat.');
         }
+        System.debug('ContractService : activation du contrat : ' + contractId);
         update new Contract(Id = contractId, Status = STATUS_ACTIVATED);
     }
 
@@ -23,6 +25,7 @@ public with sharing class ContractService {
         if (!Schema.sObjectType.Contract.isUpdateable()) {
             throw new SecurityException('Vous n\'avez pas le droit de modifier ce contrat.');
         }
+        System.debug('ContractService : mise à jour du contrat : ' + contractToUpdate.Name);
         update contractToUpdate;
     }
 
@@ -30,6 +33,7 @@ public with sharing class ContractService {
         if (!Schema.sObjectType.Contract.isDeletable()) {
             throw new SecurityException('Vous n\'avez pas le droit de supprimer ce contrat.');
         }
+        System.debug('ContractService : suppression du contrat : ' + contractId);
         delete new Contract(Id = contractId);
     }
 }

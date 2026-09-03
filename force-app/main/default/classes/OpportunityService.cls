@@ -4,6 +4,7 @@ public with sharing class OpportunityService {
         if (!Schema.sObjectType.Opportunity.isCreateable()) {
             throw new SecurityException('Vous n\'avez pas le droit de créer une opportunité.');
         }
+        System.debug('OpportunityService : creation d\'une opportunité : ' + newOpportunity.Name);
         insert newOpportunity;
         return newOpportunity;
     }
@@ -12,6 +13,7 @@ public with sharing class OpportunityService {
         if (!Schema.sObjectType.Opportunity.isUpdateable()) {
             throw new SecurityException('Vous n\'avez pas le droit de modifier cette opportunité.');
         }
+        System.debug('OpportunityService : mise à jour de l\'opportunité : ' + opportunityToUpdate.Name);
         update opportunityToUpdate;
     }
 
@@ -19,6 +21,7 @@ public with sharing class OpportunityService {
         if (!Schema.sObjectType.Opportunity.isDeletable()) {
             throw new SecurityException('Vous n\'avez pas le droit de supprimer cette opportunité.');
         }
+        System.debug('OpportunityService : suppression de l\'opportunité : ' + opportunityId);
         delete new Opportunity(Id = opportunityId);
     }
 }

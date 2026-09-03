@@ -44,21 +44,29 @@ private class TripSelectorServiceTest {
     }
 
     @isTest
-    static void testCreateTrip_InsertsSuccessfully() {
-        Trip__c newTrip = new Trip__c(
-                Statut__c = 'À venir',
-                Destination__c = 'Nouvelle Destination',
-                Start_Date__c = Date.today().addDays(30),
-                End_Date__c = Date.today().addDays(37),
-                Number_of_Participants__c = 6
-        );
+static void testCreateTrip_InsertsSuccessfully() {
+    Account acc = TestDataFactory.createAccount('Compte Create Trip Test');
+    Opportunity opp = TestDataFactory.createOpportunity(
+            acc.Id, 'Prospecting', 0, 'Nouvelle Destination',
+            Date.today().addDays(30), Date.today().addDays(37), 6
+    );
 
-        Test.startTest();
-        Trip__c created = TripService.createTrip(newTrip);
-        Test.stopTest();
+    Trip__c newTrip = new Trip__c(
+            Statut__c = 'À venir',
+            Destination__c = 'Nouvelle Destination',
+            Start_Date__c = Date.today().addDays(30),
+            End_Date__c = Date.today().addDays(37),
+            Number_of_Participants__c = 6,
+            Account__c = acc.Id,
+            Opportunity__c = opp.Id
+    );
 
-        System.assertNotEquals(null, created.Id, 'Le voyage doit avoir un Id après création');
-    }
+    Test.startTest();
+    Trip__c created = TripService.createTrip(newTrip);
+    Test.stopTest();
+
+    System.assertNotEquals(null, created.Id, 'Le voyage doit avoir un Id après création');
+}
 
     @isTest
     static void testUpdateTrip_ModifiesSuccessfully() {
